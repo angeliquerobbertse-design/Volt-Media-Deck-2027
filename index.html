@@ -212,7 +212,7 @@ function allOpen(on){TREE.forEach(([g])=>on?open.add(g):open.delete(g));render()
 function vis(l,n){const b=bn(n);return st.page==='rates'||!b||(st.mode==='Digital'?b.dig:b.prt)}
 function card(l,n){const q=Q(n);
  if(st.page==='brands')return `<div class="bc" onclick="openDr('${q}','aud')"><div class="top">${logo(n)||''}<span class="fq">${(bn(n)||{}).f||""}</span></div>${kp(n)}</div>`;
- return ''}
+ return `<div class="bc" onclick="openDr('${q}','rates')"><div class="top">${logo(n)||''}<span class="fq">${(bn(n)||{}).f||''}</span></div><div class="mini" style="margin-top:6px">Open to view rates</div></div>`}
 const CATS=['Display','Content','Social','Paid media','Print'];
 const catOf=ch=>ch==='Takeover'?'Display':ch;
 const rcats=n=>{const m={};dedupe(ratesFor(n)).forEach(r=>{const c=catOf(r.ch);m[c]=(m[c]||0)+1});return m};
@@ -225,8 +225,8 @@ function accordion(){return TREE.map(([g,subs])=>{const cnt=subs.reduce((a,[r,bs
  return `<div class="acc ${o?'open':''}"><button class="acch" onclick="tgo('${Q(g)}')">${g}<span class="ct">${cnt} brands</span><span class="sp"></span><span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span></button><div class="accb">${subs.map(([r,bs])=>{const v=bs.filter(([l,n,a])=>vis(l,rn(n,a)));return v.length?`${r?`<div class="reg2">${r}</div>`:''}<div class="cg">${v.map(([l,n,a])=>card(l,rn(n,a))).join('')}</div>`:''}).join('')}</div></div>`}).join('')}
 function brands(){$('#view').innerHTML=`<span class="eyebrow">Our brands</span><h1 class="pg" style="font-size:clamp(24px,3vw,32px);font-weight:800;margin:6px 0 6px">Open a group, see every <span class="em">audience</span></h1>
  <div class="bar2"><div class="tg"><button class="${st.mode==='Digital'?'on':''}" onclick="st.mode='Digital';render()">Digital</button><button class="${st.mode==='Print'?'on':''}" onclick="st.mode='Print';render()">Print</button></div><div><button class="btn sm g" onclick="allOpen(true)">Expand all</button> <button class="btn sm g" onclick="allOpen(false)">Collapse all</button></div></div>${accordion()}`;roll()}
-function rates(){$('#view').innerHTML=`<span class="eyebrow">Rates 2026</span><h1 class="pg" style="font-size:clamp(24px,3vw,32px);font-weight:800;margin:6px 0 6px">Rates – <span class="em">pick a category, then a brand</span></h1>
- <div class="bar2"><div class="sub" style="font-size:13px">All rates exclude VAT and agency commission.</div><div><button class="btn sm g" onclick="CATS.forEach(c=>open.add('c:'+c));render()">Expand all</button> <button class="btn sm g" onclick="CATS.forEach(c=>open.delete('c:'+c));render()">Collapse all</button></div></div>${catAccordion()}`}
+function rates(){$('#view').innerHTML=`<span class="eyebrow">Rates 2026</span><h1 class="pg" style="font-size:clamp(24px,3vw,32px);font-weight:800;margin:6px 0 6px">Rates – <span class="em">pick a brand</span></h1>
+ <div class="bar2"><div class="sub" style="font-size:13px">Each brand opens to Display, Content, Social, Paid media and Print. All rates exclude VAT and agency commission.</div><div><button class="btn sm g" onclick="allOpen(true)">Expand all</button> <button class="btn sm g" onclick="allOpen(false)">Collapse all</button></div></div>${accordion()}`}
 // ---------- drawer
 function closeDr(){st.dr=null;$('#dr').classList.remove('on');$('#sc').classList.remove('on')}
 function openDr(n,v,c){st.dr={n,v,ch:c||null,at:null};drawer();$('#dr').classList.add('on');$('#sc').classList.add('on')}
